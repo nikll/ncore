@@ -379,7 +379,7 @@ abstract class Model implements \ArrayAccess {
 			} elseif ($col['type'] == 'json') {
 				$return[$col_name] = true;
 			} elseif ($col['type'] == 'timestamp') {
-				$return[$col_name] = (Validator::preg('datetime', $row[$col_name]) || (is_null($row[$col_name]) && !empty($col['on_update_CURRENT_TIMESTAMP'])));
+				$return[$col_name] = ((!empty($col['on_update_CURRENT_TIMESTAMP']) && is_null($row[$col_name])) || Validator::preg('datetime', $row[$col_name]));
 			} elseif ($col['type'] == 'date' || $col['type'] == 'time' || $col['type'] == 'datetime') {
 				$return[$col_name] = Validator::preg($col['type'], $row[$col_name]);
 			} elseif ($col['type'] == 'set') {
