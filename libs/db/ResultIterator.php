@@ -56,9 +56,11 @@ class ResultIterator extends \mysqli_result {
 	 */
 	public function fetch_column() {
 		$result = [];
-		if ($this->field_count == 1)
+		if ($this->field_count == 1) {
 			while ($row = $this->fetch_row()) $result[] = $row[0];
-		else	while ($row = $this->fetch_row()) $result[$row[0]] = $row[1];
+		} else {
+			while ($row = $this->fetch_row()) $result[$row[0]] = $row[1];
+		}
 		return $result;
 	}
 
@@ -68,9 +70,11 @@ class ResultIterator extends \mysqli_result {
 	 * @return \Generator
 	 */
 	public function fetch_iterator_column() {
-		if ($this->field_count == 1)
+		if ($this->field_count == 1) {
 			while ($row = $this->fetch_row()) yield $row[0];
-		else	while ($row = $this->fetch_row()) yield $row[0] => $row[1];
+		} else {
+			while ($row = $this->fetch_row()) yield $row[0] => $row[1];
+		}
 	}
 
 	/**

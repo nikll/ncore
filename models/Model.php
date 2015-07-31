@@ -388,7 +388,9 @@ abstract class Model implements \ArrayAccess {
 				$return[$col_name] = Validator::enum($row[$col_name], $col['allow_values']);
 			} elseif ($col['php_type'] == 'string') {
 				$return[$col_name] = Validator::string($row[$col_name], (isset($col['length']) ? $col['length'] : 0));
-			} else	$return[$col_name] = Validator::preg($col['php_type'], $row[$col_name]);
+			} else {
+				$return[$col_name] = Validator::preg($col['php_type'], $row[$col_name]);
+			}
 		}
 		return $return;
 	}

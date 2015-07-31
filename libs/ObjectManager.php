@@ -28,6 +28,7 @@ class ObjectManager {
 			case 5: self::$objects[$key] = new $class_name(reset($params), next($params), next($params), next($params), next($params)); break;
 			case 6: self::$objects[$key] = new $class_name(reset($params), next($params), next($params), next($params), next($params), next($params)); break;
 			case 7: self::$objects[$key] = new $class_name(reset($params), next($params), next($params), next($params), next($params), next($params), next($params)); break;
+			case 8: self::$objects[$key] = new $class_name(reset($params), next($params), next($params), next($params), next($params), next($params), next($params), next($params)); break;
 			default: throw new Exception('ты мудаг бугага :-D найди откуда вылезла эта надпись и подумай нахрена тебе столько параметров в конструкторе обьекта :-P');  break;
 		}
 		return self::$objects[$key];

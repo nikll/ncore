@@ -212,6 +212,7 @@ class App extends Controller {
 
 		// extract parameter values from URL if route matches the current request
 		if (!preg_match('#^'.$regexp.'/?$#', $this->url, $url_values)) return false;
+
 		if (empty($params_config)) return $this->_exec($callback, []);
 
 		$params = [];
@@ -221,7 +222,9 @@ class App extends Controller {
 			if (strpos($url_values[$cnt], '/') !== false) {
 				$params[$key] = explode('/', rtrim($url_values[$cnt], '/'));
 				foreach ($params[$key] as &$val) $val = filter($val, $type);
-			} else  $params[$key] = filter($url_values[$cnt], $type);
+			} else {
+				$params[$key] = filter($url_values[$cnt], $type);
+			}
 		}
 		return $this->_exec($callback, $params);
 	}
@@ -263,7 +266,7 @@ class App extends Controller {
 
 	/**
 	 * рендерит главный шаблон
-	 * @param $data данные для шаблонизатора
+	 * @param array $data данные для шаблонизатора
 	 */
 	protected function _app_render($data) {
 		if ($this->layout) exit($this->templater($this->layout, $data));

@@ -20,7 +20,7 @@ function get_m($old_time = 0.0) {
  * @param string $chars  набор символов для генерации
  * @return string
  */
-function gen_pass($length = 10, $chars = '23456789qwertyupasdfghjkzxcvbnmWERTYUPASDFGHJKLZXCVBNM') {
+function gen_pass($length = 6, $chars = '23456789qwertyupasdfghjkzxcvbnmWERTYUPASDFGHJKLZXCVBNM') {
 	return mb_substr(str_shuffle($chars), 0, $length);
 }
 
@@ -31,11 +31,15 @@ function gen_pass($length = 10, $chars = '23456789qwertyupasdfghjkzxcvbnmWERTYUP
  * @return string
  */
 function html2txt($html) {
-	return trim(preg_replace(['@<script[^>]*?>.*?</script>@si', // Strip out javascript
-				  '@<[/!]*?[^<>]*?>@si', // Strip out HTML tags
-				  '@<style[^>]*?>.*?</style>@siU', // Strip style tags properly
-				  '@<![\s\S]*?--[ \t\n\r]*>@' // Strip multi-line comments including CDATA
-				 ], '', $html));
+	return trim(preg_replace([
+			'@<script[^>]*?>.*?</script>@si', // Strip out javascript
+			'@<[/!]*?[^<>]*?>@si',            // Strip out HTML tags
+			'@<style[^>]*?>.*?</style>@siU',  // Strip style tags properly
+			'@<![\s\S]*?--[ \t\n\r]*>@'       // Strip multi-line comments including CDATA
+		],
+		'',
+		$html
+	));
 }
 
 /**
@@ -129,8 +133,8 @@ function rmdir_recursive($dir) {
  */
 function translit($str) {
 	return str_replace(
-		['а', 'б', 'в', 'г', 'д', 'е', 'ё', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ъ', 'ы', 'э', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ъ', 'Ы', 'Э', 'ж',  'ц',  'ч',  'ш',  'щ',    'ь', 'ю',  'я',  'Ж',  'Ц',  'Ч',  'Ш',  'Щ',    'Ь', 'Ю',  'Я'],
-		['a', 'b', 'v', 'g', 'd', 'e', 'e', 'z', 'i', 'y', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'h', "'", 'i', 'e', 'A', 'B', 'V', 'G', 'D', 'E', 'E', 'Z', 'I', 'Y', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F', 'H', "'", 'I', 'E', 'zh', 'ts', 'ch', 'sh', 'shch', '',  'yu', 'ya', 'ZH', 'TS', 'CH', 'SH', 'SHCH', '',  'YU', 'YA'],
+		['а', 'б', 'в', 'г', 'д', 'е', 'ё', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ъ', 'ы', 'э', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ъ', 'Ы', 'Э',  'ж',  'ц',  'ч',  'ш',    'щ', 'ь',  'ю',  'я',  'Ж',  'Ц',  'Ч',  'Ш',    'Щ', 'Ь',  'Ю',  'Я'],
+		['a', 'b', 'v', 'g', 'd', 'e', 'e', 'z', 'i', 'y', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'h', "'", 'i', 'e', 'A', 'B', 'V', 'G', 'D', 'E', 'E', 'Z', 'I', 'Y', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F', 'H', "'", 'I', 'E', 'zh', 'ts', 'ch', 'sh', 'shch',  '', 'yu', 'ya', 'ZH', 'TS', 'CH', 'SH', 'SHCH',  '', 'YU', 'YA'],
 		$str
 	);
 }
@@ -279,7 +283,7 @@ function filter($val, $type = '') {
 
 		case 'email':
 		case 'mail':
-			return preg_filter('/^[a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$/', "\\0", $val);
+			return preg_filter('/^[a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&\'*+ \\/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$/', "\\0", $val);
 
 		case 'nohtml':
 			return html2txt($val);
@@ -336,7 +340,7 @@ function get_full_url() {
 	$port  = $_SERVER['SERVER_PORT'];
 	return ($https ? 'https://' : 'http://')
 	       .(!empty($_SERVER['REMOTE_USER']) ? $_SERVER['REMOTE_USER'].'@' : '')
-	       .(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'].($https && $port == 443 || $port == 80 ? '' : ':'.$port))
+	       .(isset($_SERVER['HTTP_HOST'])    ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'].($https && $port == 443 || $port == 80 ? '' : ':'.$port))
 	       .mb_substr($_SERVER['SCRIPT_NAME'], 0, mb_strrpos($_SERVER['SCRIPT_NAME'], '/'));
 }
 
@@ -348,8 +352,7 @@ function get_full_url() {
  * @return float
  */
 function fix_integer_overflow($size) {
-	if ($size < 0) $size += 2.0 * (PHP_INT_MAX + 1);
-	return $size;
+	return $size + ($size < 0 ? 2.0 * (PHP_INT_MAX + 1) : 0);
 }
 
 function from_human_bytes($val) {
@@ -371,11 +374,7 @@ function from_human_bytes($val) {
  * @return float
  */
 function get_file_size($file_path, $clear_stat_cache = false) {
-	if ($clear_stat_cache) {
-		if (version_compare(PHP_VERSION, '5.3.0') >= 0)
-			clearstatcache(true, $file_path);
-		else	clearstatcache();
-	}
+	if ($clear_stat_cache) clearstatcache(true, $file_path);
 
 	return fix_integer_overflow(filesize($file_path));
 }

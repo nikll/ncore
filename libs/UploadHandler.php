@@ -24,19 +24,19 @@ class UploadHandler {
 	];
 
 	protected $error_messages = [
-		UPLOAD_ERR_INI_SIZE => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
-		UPLOAD_ERR_FORM_SIZE => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
-		UPLOAD_ERR_PARTIAL => 'The uploaded file was only partially uploaded',
-		UPLOAD_ERR_NO_FILE => 'No file was uploaded',
+		UPLOAD_ERR_INI_SIZE   => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
+		UPLOAD_ERR_FORM_SIZE  => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
+		UPLOAD_ERR_PARTIAL    => 'The uploaded file was only partially uploaded',
+		UPLOAD_ERR_NO_FILE    => 'No file was uploaded',
 		UPLOAD_ERR_NO_TMP_DIR => 'Missing a temporary folder',
 		UPLOAD_ERR_CANT_WRITE => 'Failed to write file to disk',
-		UPLOAD_ERR_EXTENSION => 'A PHP extension stopped the file upload',
+		UPLOAD_ERR_EXTENSION  => 'A PHP extension stopped the file upload',
 
-		'post_max_size' => 'The uploaded file exceeds the post_max_size directive in php.ini',
-		'max_file_size' => 'Файл слижком большой',
-		'accept_file_types' => 'Недопустимый тип файла',
+		'post_max_size'       => 'The uploaded file exceeds the post_max_size directive in php.ini',
+		'max_file_size'       => 'Файл слижком большой',
+		'accept_file_types'   => 'Недопустимый тип файла',
 		'max_number_of_files' => 'Превышено количество файлов',
-		'abort' => 'Загрузка файла прервана'
+		'abort'               => 'Загрузка файла прервана'
 	];
 
 	protected $accept_file_types = '/.+$/i';
@@ -69,7 +69,7 @@ class UploadHandler {
 					@$upload['tmp_name'],
 					($file_name ? $file_name : @$upload['name']),
 					fix_integer_overflow(intval($size ? $size : (isset($upload['size']) ? $upload['size'] : @$_SERVER['CONTENT_LENGTH']))),
-					(isset($upload['type'])  ? $upload['type'] : @$_SERVER['CONTENT_TYPE']),
+					(isset($upload['type']) ? $upload['type'] : @$_SERVER['CONTENT_TYPE']),
 					@$upload['error'],
 					null,
 					$content_range

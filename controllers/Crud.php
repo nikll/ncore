@@ -39,6 +39,8 @@ abstract class Crud extends Controller {
 	 */
 	public function read($params=null) {
 		if (!isset($params['id'])) return $this->model->jsonList();
+
+		/* @var $model \models\Model */
 		if ($model = $this->model->findByPk($params['id'])) return $model->toJson();
 
 		header('Status: 404 Not Found');
@@ -55,15 +57,14 @@ abstract class Crud extends Controller {
 	 * @return string
 	 */
 	public function create($params=null) {
-		$model = $this->model;
-		$save = $model->insert(static::get_json_request());
+		$save = $this->model->insert(static::getJsonRequest());
 		if ($save !== false) return json_encode($save);
 
 		header('Status: 400 Bad Request');
 		return json_encode([
 			'title'  => 'Ошибки при создании записи на сервере<br>'.__METHOD__,
 			'header' => 'Ошибки валидации по следующим полям',
-			'errors' => array_keys(array_filter($model->validate(), 'is_empty'))
+			'errors' => array_keys(array_filter($this->model->validate(), 'is_empty'))
 		]);
 	}
 
@@ -73,8 +74,9 @@ abstract class Crud extends Controller {
 	 * @return string
 	 */
 	public function update($params=null) {
+		/* @var $model \models\Model */
 		if (isset($params['id']) && $model = $this->model->findByPk($params['id'])) {
-			$save = $model->update(static::get_json_request());
+			$save = $model->update(static::getJsonRequest());
 			if ($save !== false) return json_encode($save);
 
 			header('Status: 400 Bad Request');

@@ -1,10 +1,9 @@
 <?
 
 namespace db;
-
 /**
  * Class ConnectException
- * @package Db
+ * @package db
  */
 class ConnectException extends \Exception {
 
@@ -17,6 +16,24 @@ class ConnectException extends \Exception {
 class QueryException extends \Exception {
 
 }
+
+/**
+ * Class InvalidDataException
+ * @package db
+ */
+class InvalidDataException extends \Exception {
+	/**
+	 * @var array
+	 */
+	public $data;
+
+	static function create($message, array $data = null) {
+		$e = new self('Ошибки валидации по следующим полям');
+		$e->data = $data;
+		return $e;
+	}
+}
+
 
 /**
  * драйвер для работы с mysql, наследован от mysqli
@@ -44,7 +61,6 @@ class Db extends \mysqli {
 	 * @throws QueryException
 	 */
 	public function real_query($query) {
-		//\games\reels\baseReels::log_file($query);
 		if (!parent::real_query($query)) throw new QueryException($this->error."\n".'query: '.$query, $this->errno);
 		return true;
 	}
@@ -81,6 +97,7 @@ class Db extends \mysqli {
 		$result = $this->query($query);
 		if ($result->num_rows) foreach ($result as $row) yield new $class_name(($override_fields ? array_merge($row, $override_fields) : $row));
 	}
+
 	/**
 	 * @param string $query
 	 * @return bool|array
