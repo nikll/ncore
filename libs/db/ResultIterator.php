@@ -29,7 +29,6 @@ class ResultIterator extends \mysqli_result {
 		return $result;
 	}
 
-
 	/**
 	 * @param string $key
 	 * @return array
@@ -47,7 +46,6 @@ class ResultIterator extends \mysqli_result {
 			while ($row = $this->fetch_assoc()) yield $row;
 		}
 	}
-
 
 	/**
 	 * возвращает колонку в виде массива

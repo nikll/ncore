@@ -215,7 +215,6 @@ abstract class Model implements \ArrayAccess {
 		return static::db()->replace(static::$_table, $data);
 	}
 
-
 	/**
 	 * @param string $col
 	 * @throws \Exception
@@ -473,9 +472,11 @@ abstract class Model implements \ArrayAccess {
 		$data = [];
 		foreach (array_keys(static::$_columns) as $key) {
 			$method = 'get'.capitalize($key);
-			if (method_exists($this, $method))
+			if (method_exists($this, $method)) {
 				$data[$key] = $this->$method();
-			else	$data[$key] = (isset($this->_item[$key]) ? $this->_item[$key] : null);
+			} else {
+				$data[$key] = (isset($this->_item[$key]) ? $this->_item[$key] : null);
+			}
 		}
 
 		foreach ($with as $key => $getter) $data[$key] = static::iterator2Array($this->$getter());

@@ -155,7 +155,6 @@ class App extends Controller {
 		$this->route(__FUNCTION__, $pattern, $callback);
 	}
 
-
 	/**
 	 * обертка для CRUD интерфейса backbone.js
 	 * @param string        $prefix

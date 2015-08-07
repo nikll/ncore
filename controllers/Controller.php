@@ -52,7 +52,6 @@ abstract class Controller {
 		return Templater::exec($this->templates_path.$template_name.'.tpl', $data);
 	}
 
-
 	/**
 	 * обертка для вызова шаблонизатора, формирует путь к шаблону с учетом текущего класса
 	 * @param array  $data

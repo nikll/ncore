@@ -34,7 +34,6 @@ class InvalidDataException extends \Exception {
 	}
 }
 
-
 /**
  * драйвер для работы с mysql, наследован от mysqli
  * Class Db
@@ -263,8 +262,12 @@ class Db extends \mysqli {
 		$result = true;
 		$this->autocommit(false);
 		try {
-			$callback();
-			$this->commit();
+			if ($callback()) {
+				$this->commit();
+			} else {
+				$this->rollback();
+				$result = false;
+			}
 		} catch (QueryException $e) {
 			$this->rollback();
 			$result = false;
