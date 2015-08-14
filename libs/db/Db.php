@@ -14,7 +14,13 @@ class ConnectException extends \Exception {
  * @package Db
  */
 class QueryException extends \Exception {
+	public $query = '';
 
+	public static function create($error, $errno, $query='') {
+		$e = new self($error, $errno);
+		$e->query = $query;
+		return $e;
+	}
 }
 
 /**
@@ -60,7 +66,7 @@ class Db extends \mysqli {
 	 * @throws QueryException
 	 */
 	public function real_query($query) {
-		if (!parent::real_query($query)) throw new QueryException($this->error."\n".'query: '.$query, $this->errno);
+		if (!parent::real_query($query)) throw QueryException::create($this->error, $this->errno, $query);
 		return true;
 	}
 
