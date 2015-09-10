@@ -420,8 +420,7 @@ abstract class Model implements \ArrayAccess {
 	 * @return string JSON
 	 */
 	public function toJson(array $with = []) {
-		$row = $this->row($with);
-		return json_encode($row);
+		return json_encode($this->row($with));
 	}
 
 	/**
