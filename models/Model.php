@@ -54,9 +54,6 @@ abstract class Model implements \ArrayAccess {
 	/* @var array $_columns набор колонок */
 	protected static $_columns = [];
 
-	/* @var array $_default_item дефолтный набор данных */
-	protected static $_default_item = [];
-
 	/* @var array $_keys ключи таблицы включая внешние связи */
 	protected static $_keys = [];
 

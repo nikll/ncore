@@ -111,6 +111,7 @@ class ModelGenerator {
 			if ($tmp['type'] == 'text' && $col_name == 'additional') {
 				$cols[$col_name]['type'] = 'serialize';
 				$cols[$col_name]['php_type'] = 'array';
+				if(empty($cols[$col_name]['default'])) $cols[$col_name]['default'] = [];
 			}
 			if ($cols[$col_name]['is_null'] = ($col['Null'] == 'YES')) $cols[$col_name]['default'] = null;
 			if (isset($col['Default'])) $cols[$col_name]['default'] = $col['Default'];
