@@ -248,8 +248,8 @@ class App extends Controller {
 	}
 
 	/**
-	 * @param callback|array $callback
-	 * @param array          $params
+	 * @param callback $callback
+	 * @param array    $params
 	 * @return mixed
 	 * @throws \Exception
 	 */

@@ -475,7 +475,10 @@ abstract class Model implements \ArrayAccess {
 			}
 		}
 
-		foreach ($with as $key => $getter) $data[$key] = static::iterator2Array($this->$getter());
+		foreach ($with as $key => $getter) {
+			$data[$key] = $this->$getter();
+			if ($data[$key] instanceof Generator) $data[$key] = static::iterator2Array($data[$key]);
+		}
 		return $data;
 	}
 
