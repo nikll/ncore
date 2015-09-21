@@ -16,8 +16,8 @@ abstract class Model implements \ArrayAccess {
 	public static $map_types_mysql2php = [
 		'tinyint'	=> 'int',
 		'smallint'	=> 'int',
-        'mediumint'	=> 'int',
-        'bigint'	=> 'int',
+		'mediumint'	=> 'int',
+		'bigint'	=> 'int',
 		'int'		=> 'int',
 		'year'		=> 'int',
 
@@ -320,7 +320,7 @@ abstract class Model implements \ArrayAccess {
 		$row = $this->pack($raw_row);
 		if (!$raw_row || !$row) return []; // если полей для сохранения нет то и в базу ломится незачем.
 		static::updateAll($row, $this->_pk);
-		$this->pkSet($row);
+		$this->pkSet($row + $this->_pk);
 		return $raw_row;
 	}
 
