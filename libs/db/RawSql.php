@@ -14,29 +14,29 @@ namespace db;
  * @package db
  */
 class RawSql {
-	/* @var string */
-	protected $part_sql;
+    /* @var string */
+    protected $part_sql;
 
-	/**
-	 * @param string $part_sql
-	 */
-	public function __construct($part_sql) {
-		$this->part_sql = $part_sql;
-	}
+    /**
+     * @param string $part_sql
+     */
+    public function __construct($part_sql) {
+        $this->part_sql = $part_sql;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function __toString() {
-		return $this->part_sql;
-	}
+    /**
+     * @return string
+     */
+    public function __toString() {
+        return $this->part_sql;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function __invoke() {
-		return $this->__toString();
-	}
+    /**
+     * @return string
+     */
+    public function __invoke() {
+        return $this->__toString();
+    }
 }
 
 ?>

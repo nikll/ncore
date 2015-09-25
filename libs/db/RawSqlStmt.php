@@ -12,27 +12,27 @@ namespace db;
 *@package db
  */
 class RawSqlStmt extends RawSql {
-	/**
-	 * генерирует часть условия sql запроса, например если передать массив вида [1, 3, 10, 'test_fail', '\'test\'', 'null'] на выходе получим строку IN(1, 3, 10, test_fail, 'test', null)
-	 * ВНИМАНИЕ!!! экранирование не осуществляется! для экранирования, перед передачей в метод IN(), обработать массив при помощи Db::escape
-	 * @param array $values
-	 * @return mixed
-	 */
-	public static function IN(array $values) {
-		$class = get_called_class();
-		return new $class('IN ('.implode(', ', $values).')');
-	}
+    /**
+     * генерирует часть условия sql запроса, например если передать массив вида [1, 3, 10, 'test_fail', '\'test\'', 'null'] на выходе получим строку IN(1, 3, 10, test_fail, 'test', null)
+     * ВНИМАНИЕ!!! экранирование не осуществляется! для экранирования, перед передачей в метод IN(), обработать массив при помощи Db::escape
+     * @param array $values
+     * @return mixed
+     */
+    public static function IN(array $values) {
+        $class = get_called_class();
+        return new $class('IN ('.implode(', ', $values).')');
+    }
 
-	/**
-	 * генерирует часть условия sql запроса, например если передать массив вида [1, 3, 10, 'test_fail', '\'test\'', 'null'] на выходе получим строку NOT IN(1, 3, 10, test_fail, 'test', null)
-	 * ВНИМАНИЕ!!! экранирование не осуществляется! для экранирования, перед передачей в метод NOT_IN(), обработать массив при помощи Db::escape
-	 * @param array $values
-	 * @return mixed
-	 */
-	public static function NOT_IN(array $values) {
-		$class = get_called_class();
-		return new $class('NOT IN ('.implode(', ', $values).')');
-	}
+    /**
+     * генерирует часть условия sql запроса, например если передать массив вида [1, 3, 10, 'test_fail', '\'test\'', 'null'] на выходе получим строку NOT IN(1, 3, 10, test_fail, 'test', null)
+     * ВНИМАНИЕ!!! экранирование не осуществляется! для экранирования, перед передачей в метод NOT_IN(), обработать массив при помощи Db::escape
+     * @param array $values
+     * @return mixed
+     */
+    public static function NOT_IN(array $values) {
+        $class = get_called_class();
+        return new $class('NOT IN ('.implode(', ', $values).')');
+    }
 }
 
 ?>

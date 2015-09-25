@@ -13,70 +13,70 @@ if (!defined('ACTION_NAME')) define('ACTION_NAME', 'aid');
  */
 
 class LinkManager {
-	/**
-	 * Создает и добавляет в сессию ссылку для этого класса с переданными параметрами, и возвращает URL ссылки
-	 *
-	 * @param string $class
-	 * @param string $method
-	 * @param array  $params
-	 * @return string
-	 */
-	public static function add($class, $method, array $params = []) {
-		if (!isset($_SESSION['_links'])) $_SESSION['_links'] = [];
-		if (is_object($class)) $class = get_class($class);
-		$link = '';
-		if ($params) {
-			if (!is_array($params)) $params = explode('/', $params);
-			foreach ($params as $key => $val) $link .= (is_int($key) ? 'param_' : '').$key.'='.$val.';';
-		}
-		$link = md5($class.$method.$link);
-		$_SESSION['_links'][$link] = compact('class', 'method', 'params');
-		if (!session_id()) cache()->set('lm_'.$link, $_SESSION['_links'][$link], ['lm'], 86400);
+    /**
+     * Создает и добавляет в сессию ссылку для этого класса с переданными параметрами, и возвращает URL ссылки
+     *
+     * @param string $class
+     * @param string $method
+     * @param array  $params
+     * @return string
+     */
+    public static function add($class, $method, array $params = []) {
+        if (!isset($_SESSION['_links'])) $_SESSION['_links'] = [];
+        if (is_object($class)) $class = get_class($class);
+        $link = '';
+        if ($params) {
+            if (!is_array($params)) $params = explode('/', $params);
+            foreach ($params as $key => $val) $link .= (is_int($key) ? 'param_' : '').$key.'='.$val.';';
+        }
+        $link = md5($class.$method.$link);
+        $_SESSION['_links'][$link] = compact('class', 'method', 'params');
+        if (!session_id()) cache()->set('lm_'.$link, $_SESSION['_links'][$link], ['lm'], 86400);
 
-		if (isset($_GET['XDEBUG_TRACE']))   $link .= '&XDEBUG_TRACE='.$_GET['XDEBUG_TRACE'].$class.$method;
-		if (isset($_GET['XDEBUG_PROFILE'])) $link .= '&XDEBUG_PROFILE='.$_GET['XDEBUG_PROFILE'].$class.$method;
-		return '/api/?'.ACTION_NAME.'='.$link;
-	}
+        if (isset($_GET['XDEBUG_TRACE']))   $link .= '&XDEBUG_TRACE='.$_GET['XDEBUG_TRACE'].$class.$method;
+        if (isset($_GET['XDEBUG_PROFILE'])) $link .= '&XDEBUG_PROFILE='.$_GET['XDEBUG_PROFILE'].$class.$method;
+        return '/api/?'.ACTION_NAME.'='.$link;
+    }
 
-	/**
-	 * выдает по aid имя класса, кому принадлежит эта ссылка, и переданные параметры
-	 *
-	 * @param string $link
-	 * @return mixed|null
-	 */
-	public static function get($link) {
-		return (isset($_SESSION['_links'][$link]) ? $_SESSION['_links'][$link] : (!session_id() ? cache()->get('lm_'.$link) : null));
-	}
+    /**
+     * выдает по aid имя класса, кому принадлежит эта ссылка, и переданные параметры
+     *
+     * @param string $link
+     * @return mixed|null
+     */
+    public static function get($link) {
+        return (isset($_SESSION['_links'][$link]) ? $_SESSION['_links'][$link] : (!session_id() ? cache()->get('lm_'.$link) : null));
+    }
 
-	/**
-	 * удаляет ссылку
-	 * @param string $link
-	 * @return bool
-	 */
-	public static function delete_link($link) {
-		cache()->delete('lm_'.$link);
-		if (!isset($_SESSION['_links'][$link])) return false;
-		unset($_SESSION['_links'][$link]);
-		return true;
-	}
+    /**
+     * удаляет ссылку
+     * @param string $link
+     * @return bool
+     */
+    public static function delete_link($link) {
+        cache()->delete('lm_'.$link);
+        if (!isset($_SESSION['_links'][$link])) return false;
+        unset($_SESSION['_links'][$link]);
+        return true;
+    }
 
-	/**
-	 * возвращает массив из всех активных ссылок
-	 * @return array
-	 */
-	public static function get_all() {
-		return (!empty($_SESSION['_links']) ? $_SESSION['_links'] : []);
-	}
+    /**
+     * возвращает массив из всех активных ссылок
+     * @return array
+     */
+    public static function get_all() {
+        return (!empty($_SESSION['_links']) ? $_SESSION['_links'] : []);
+    }
 
-	/**
-	 * Удаляет все ссылки
-	 * @return bool
-	 */
-	public static function clear() {
-		cache()->delete_tag('lm');
-		$_SESSION['_links'] = [];
-		return true;
-	}
+    /**
+     * Удаляет все ссылки
+     * @return bool
+     */
+    public static function clear() {
+        cache()->delete_tag('lm');
+        $_SESSION['_links'] = [];
+        return true;
+    }
 }
 
 /**
@@ -88,7 +88,7 @@ class LinkManager {
  * @return string
  */
 function create_link($class, $method, array $params = []) {
-	return LinkManager::add($class, $method, $params);
+    return LinkManager::add($class, $method, $params);
 }
 
 /**
@@ -98,7 +98,7 @@ function create_link($class, $method, array $params = []) {
  * @return bool
  */
 function get_link($link) {
-	return LinkManager::get($link);
+    return LinkManager::get($link);
 }
 
 /**
@@ -107,8 +107,8 @@ function get_link($link) {
  * @return bool|mixed|null
  */
 function get_ajax_link() {
-	if (!isset($_GET[ACTION_NAME])) return false;
-	return LinkManager::get($_GET[ACTION_NAME]);
+    if (!isset($_GET[ACTION_NAME])) return false;
+    return LinkManager::get($_GET[ACTION_NAME]);
 }
 
 ?>
