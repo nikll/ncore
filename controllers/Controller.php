@@ -118,7 +118,7 @@ abstract class Controller {
      * @return array
      */
     public static function getJsonRequest() {
-        return (array)json_decode(@file_get_contents('php://input'));
+        return (array)json_decode(@file_get_contents('php://input'), true);
     }
 }
 

@@ -34,7 +34,7 @@ class InvalidDataException extends \Exception {
     public $data;
 
     static function create($message, array $data = null) {
-        $e = new self('Ошибки валидации по следующим полям');
+        $e = new self($message);
         $e->data = $data;
         return $e;
     }

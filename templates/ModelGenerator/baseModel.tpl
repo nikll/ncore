@@ -102,11 +102,11 @@ foreach ($columns as $col) if (in_array($col['type'], ['set', 'serialize', 'json
         $data = parent::pack($data);
 <?foreach ($columns as $col_name => $col):?>
 <?if ($col['type'] == 'set'):?>
-        if (is_array($data['<?=$col_name?>'])) $data['<?=$col_name?>'] = implode(',', $data['<?=$col_name?>']);
+        if (isset($data['<?=$col_name?>']) && is_array($data['<?=$col_name?>'])) $data['<?=$col_name?>'] = implode(',', $data['<?=$col_name?>']);
 <?elseif ($col['type'] == 'serialize'):?>
         if ($data['<?=$col_name?>']) $data['<?=$col_name?>'] = serialize($data['<?=$col_name?>']);
 <?elseif ($col['type'] == 'json'):?>
-        if ($data['<?=$col_name?>']) $data['<?=$col_name?>'] = json_encode($data['<?=$col_name?>']);
+        if (isset($data['<?=$col_name?>']) && is_array($data['<?=$col_name?>']) ) $data['<?=$col_name?>'] = json_encode($data['<?=$col_name?>']);
 <?endif?>
 <?endforeach?>
         return $data;
