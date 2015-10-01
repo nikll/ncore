@@ -8,9 +8,6 @@ ini_set('mbstring.http_output',       'pass');
 ini_set('mbstring.internal_encoding', 'UTF-8');
 mb_internal_encoding('UTF-8');
 
-ini_set('error_log', ROOT_PATH.'logs/php_errors.log');
-
-
 // пути поиска файлов фреймворка
 define('CORE_ROOT_PATH',        dirname(__FILE__).'/');
 define('CORE_LIBS_PATH',        CORE_ROOT_PATH.'libs/');
