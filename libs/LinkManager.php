@@ -22,6 +22,7 @@ class LinkManager {
      * @return string
      */
     public static function add($class, $method, array $params = []) {
+        global $locale;
         if (!isset($_SESSION['_links'])) $_SESSION['_links'] = [];
         if (is_object($class)) $class = get_class($class);
         $link = '';
@@ -35,7 +36,7 @@ class LinkManager {
 
         if (isset($_GET['XDEBUG_TRACE']))   $link .= '&XDEBUG_TRACE='.$_GET['XDEBUG_TRACE'].$class.$method;
         if (isset($_GET['XDEBUG_PROFILE'])) $link .= '&XDEBUG_PROFILE='.$_GET['XDEBUG_PROFILE'].$class.$method;
-        return '/api/?'.ACTION_NAME.'='.$link;
+        return (!empty($locale) ? '/'.$locale : '').'/api/?'.ACTION_NAME.'='.$link;
     }
 
     /**
