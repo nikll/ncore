@@ -51,10 +51,15 @@ class Db extends \mysqli {
      * @param string $user
      * @param string $pass
      * @param string $db
+     * @param int    $port
      * @throws ConnectException
      */
-    public function __construct($host, $user, $pass, $db) {
-        @parent::__construct($host, $user, $pass, $db);
+    public function __construct($host, $user, $pass, $db, $port=null) {
+        if ($port) {
+            @parent::__construct($host, $user, $pass, $db, $port);
+        } else {
+            @parent::__construct($host, $user, $pass, $db);
+        }
         if ($this->connect_error) throw new ConnectException($this->connect_error, $this->connect_errno);
         //$this->set_charset('utf8');
     }

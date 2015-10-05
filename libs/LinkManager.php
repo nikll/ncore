@@ -22,7 +22,6 @@ class LinkManager {
      * @return string
      */
     public static function add($class, $method, array $params = []) {
-        global $locale;
         if (!isset($_SESSION['_links'])) $_SESSION['_links'] = [];
         if (is_object($class)) $class = get_class($class);
         $link = '';
@@ -36,7 +35,7 @@ class LinkManager {
 
         if (isset($_GET['XDEBUG_TRACE']))   $link .= '&XDEBUG_TRACE='.$_GET['XDEBUG_TRACE'].$class.$method;
         if (isset($_GET['XDEBUG_PROFILE'])) $link .= '&XDEBUG_PROFILE='.$_GET['XDEBUG_PROFILE'].$class.$method;
-        return (!empty($locale) ? '/'.$locale : '').'/api/?'.ACTION_NAME.'='.$link;
+        return '/api/?'.ACTION_NAME.'='.$link;
     }
 
     /**
@@ -46,7 +45,7 @@ class LinkManager {
      * @return mixed|null
      */
     public static function get($link) {
-        return (isset($_SESSION['_links'][$link]) ? $_SESSION['_links'][$link] : (!session_id() ? cache()->get('lm_'.$link) : null));
+        return (isset($_SESSION['_links'][$link]) ? $_SESSION['_links'][$link] : cache()->get('lm_'.$link));
     }
 
     /**
@@ -89,7 +88,8 @@ class LinkManager {
  * @return string
  */
 function create_link($class, $method, array $params = []) {
-    return LinkManager::add($class, $method, $params);
+    global $locale;
+    return (!empty($locale) ? '/'.$locale : '').LinkManager::add($class, $method, $params);
 }
 
 /**
