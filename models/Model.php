@@ -171,6 +171,17 @@ abstract class Model implements \ArrayAccess {
     }
 
     /**
+     * @param array $cols
+     * @param array $condition
+     * @return array
+     */
+    public static function fetchCols(array $cols = ['id'], array $condition = []) {
+        $sql = static::db()->implodeWhereSql($condition);
+        $sql = "SELECT ".implode(',', $cols)." FROM `".static::$_table."` ".($sql ? 'WHERE '.$sql : '');
+        return static::db()->fetch_column($sql);
+    }
+
+    /**
      * @param string $sql
      * @param array  $override_fields
      * @return Generator

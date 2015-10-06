@@ -36,14 +36,14 @@ class ResultIterator extends \mysqli_result {
     public function fetch_iterator_all($key = '') {
         if ($this->field_count == 1) {
             while ($row = $this->fetch_row()) yield $row[0];
-        } elseif ($key) {
+        } elseif (!$key) {
+            while ($row = $this->fetch_assoc()) yield $row;
+        } else {
             while ($row = $this->fetch_assoc()) {
                 $key = $row[$key];
                 unset($row[$key]);
                 yield $key => $row;
             }
-        } else {
-            while ($row = $this->fetch_assoc()) yield $row;
         }
     }
 
