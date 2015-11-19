@@ -142,11 +142,17 @@ abstract class Model implements \ArrayAccess {
     /**
      * @param array $condition
      * @param array $override_fields
+     * @param array $order_by
      * @return Model|null
      */
-    public static function find(array $condition = [], array $override_fields = []) {
+    public static function find(array $condition = [], array $override_fields = [], array $order_by = []) {
         $sql = static::db()->implodeWhereSql($condition);
-        $sql = "SELECT * FROM `".static::$_table."` ".($sql ? 'WHERE '.$sql : '')." LIMIT 1";
+        $sql = "SELECT * FROM `".static::$_table."` ".($sql ? 'WHERE '.$sql : '');
+        if (!empty($order_by)) {
+            foreach ($order_by as $col => $order) $order_by[$col] = "`$col` $order";
+            $sql .= " ORDER BY ".implode(', ', $order_by);
+        }
+        $sql .= " LIMIT 1";
         return static::findBySql($sql, $override_fields);
     }
 
@@ -250,6 +256,12 @@ abstract class Model implements \ArrayAccess {
             }
         }
     }
+
+	/**
+	 */
+	public function pkGet() {
+		return $this->_pk;
+	}
 
     /**
      * находит и сохраняет первичный ключ текущей записи
