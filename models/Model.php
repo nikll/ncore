@@ -257,11 +257,11 @@ abstract class Model implements \ArrayAccess {
         }
     }
 
-	/**
-	 */
-	public function pkGet() {
-		return $this->_pk;
-	}
+    /**
+     */
+    public function pkGet() {
+        return $this->_pk;
+    }
 
     /**
      * находит и сохраняет первичный ключ текущей записи
