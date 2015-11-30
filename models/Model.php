@@ -246,7 +246,8 @@ abstract class Model implements \ArrayAccess {
             $this->pkSet($row);
             $row = $this->unpack($row);
             foreach ($row as $key => $val) {
-                static::_checkCol($key);
+                if (!isset(static::$_columns[$key])) continue;
+                //static::_checkCol($key);
                 $method = 'set'.capitalize($key);
                 if (method_exists($this, $method)) {
                     $this->$method($val);
