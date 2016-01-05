@@ -170,10 +170,14 @@ class MemcacheTags extends Memcache {
         $new_tag_value = microtime(true);
         foreach ($keys as $tag => $key) {
             if (empty($tmp[$key])) {
-                if (!parent::add($key, $new_tag_value) && $new_tag_value2 = parent::get($key))
+                if (!parent::add($key, $new_tag_value) && $new_tag_value2 = parent::get($key)) {
                     $keys[$tag] = $new_tag_value2;
-                else    $keys[$tag] = $new_tag_value;
-            } else    $keys[$tag] = $tmp[$key];
+                } else {
+                    $keys[$tag] = $new_tag_value;
+                }
+            } else {
+                $keys[$tag] = $tmp[$key];
+            }
         }
 
         return $keys;
