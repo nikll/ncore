@@ -267,7 +267,7 @@ class Db extends \mysqli {
 
     /**
      * @param callable $callback
-     * @return ResultIterator
+     * @return bool
      */
     public function transactions(callable $callback) {
         $result = true;

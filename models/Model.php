@@ -342,6 +342,7 @@ abstract class Model implements \ArrayAccess {
         if (!$this->_update_columns) return []; // если изменений полей небыло то и в базу ломится незачем.
         $raw_row = array_intersect_key($this->_item, $this->_update_columns);
         $row = $this->pack($raw_row);
+
         if (!$raw_row || !$row) return []; // если полей для сохранения нет то и в базу ломится незачем.
         static::updateAll($row, $this->_pk);
         $this->pkSet($row + $this->_pk);
