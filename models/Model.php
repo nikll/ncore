@@ -143,7 +143,7 @@ abstract class Model implements \ArrayAccess {
      * @param array $condition
      * @param array $override_fields
      * @param array $order_by
-     * @return Model|null
+     * @return self|null
      */
     public static function find(array $condition = [], array $override_fields = [], array $order_by = []) {
         $sql = static::db()->implodeWhereSql($condition);
@@ -159,7 +159,7 @@ abstract class Model implements \ArrayAccess {
     /**
      * @param string $sql
      * @param array  $override_fields
-     * @return Model|null
+     * @return self|null
      */
     public static function findBySql($sql, array $override_fields = []) {
         return static::db()->fetch_object($sql, static::modelName(), $override_fields);
@@ -246,13 +246,12 @@ abstract class Model implements \ArrayAccess {
             $this->pkSet($row);
             $row = $this->unpack($row);
             foreach ($row as $key => $val) {
-                if (!isset(static::$_columns[$key])) continue;
                 //static::_checkCol($key);
                 $method = 'set'.capitalize($key);
                 if (method_exists($this, $method)) {
                     $this->$method($val);
                 } else {
-                    $this->_item[$key] = $val;
+                    if (isset(static::$_columns[$key])) $this->_item[$key] = $val;
                 }
             }
         }
@@ -431,7 +430,7 @@ abstract class Model implements \ArrayAccess {
      */
     public static function iterator2Array(Generator $iterator) {
         $data = [];
-        /* @var Model $model */
+        /* @var self $model */
         foreach ($iterator as $model) $data[] = $model->row();
         return $data;
     }
@@ -503,6 +502,7 @@ abstract class Model implements \ArrayAccess {
         foreach ($with as $key => $getter) {
             $data[$key] = $this->$getter();
             if ($data[$key] instanceof Generator) $data[$key] = static::iterator2Array($data[$key]);
+            if ($data[$key] instanceof Model) $data[$key] = $data[$key]->row();
         }
         return $data;
     }

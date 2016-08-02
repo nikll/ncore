@@ -117,8 +117,18 @@ abstract class Controller {
      * парсит входящий PUT|POST|DELETE json запрос в массив
      * @return array
      */
-    public static function getJsonRequest() {
+    protected static function jsonRequestWrapper() {
         return (array)json_decode(@file_get_contents('php://input'), true);
+    }
+
+    protected static $jsonRequest = [];
+
+    /**
+     * парсит входящий PUT|POST|DELETE json запрос в массив и хранит его после первого вызова функции дабы много раз не парсить
+     * @return array
+     */
+    public static function getJsonRequest() {
+        return (static::$jsonRequest ? static::$jsonRequest : static::$jsonRequest = static::jsonRequestWrapper());
     }
 }
 

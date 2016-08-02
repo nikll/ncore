@@ -33,8 +33,8 @@ class ModelGenerator {
      */
     public function generate($table, $modelNamePrefix, $db = '', $options = []) {
         if ($db) $this->set_db($db);
-        $modelNamePrefix = capitalize($modelNamePrefix);
-        $modelClass      = $modelNamePrefix.capitalize($table);
+        $modelNamePrefix = ucfirst($modelNamePrefix);
+        $modelClass      = $modelNamePrefix.ucfirst($table);
         $baseModelClass  = 'base'.ucfirst($modelClass);
         $data            = [
             'model_name_prefix' => $modelNamePrefix,
@@ -57,8 +57,8 @@ class ModelGenerator {
             }
         }
 
-        if ($data['references']) foreach ($data['references'] as $row) $data['uses'][$modelNamePrefix.capitalize($row['tbl'])] = true;
-        if ($data['relations']) foreach ($data['relations'] as $row) $data['uses'][$modelNamePrefix.capitalize($row['tbl'])] = true;
+        if ($data['references']) foreach ($data['references'] as $row) $data['uses'][$modelNamePrefix.ucfirst($row['tbl'])] = true;
+        if ($data['relations'])  foreach ($data['relations']  as $row) $data['uses'][$modelNamePrefix.ucfirst($row['tbl'])] = true;
 
         foreach ($data['columns'] as $col_name => $col) {
             $data['default_item'][$col_name] = (isset($col['default']) ? $col['default'] : null);

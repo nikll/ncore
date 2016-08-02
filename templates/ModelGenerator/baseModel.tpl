@@ -56,7 +56,7 @@ class <?=$baseModelClass?> extends Model {
 <?endforeach?>
      * @return \models\<?=$modelClass."\n"?>
      */
-    public static function findBy<?=capitalize(str_replace('PRIMARY', 'pk', $index_name))?>($<?=implode(', $', $index['cols'])?>) {
+    public static function findBy<?=ucfirst(str_replace('PRIMARY', 'pk', $index_name))?>($<?=implode(', $', $index['cols'])?>) {
         return static::find(compact('<?=implode("', '", $index['cols'])?>'));
     }
 <?endif?>
@@ -68,7 +68,7 @@ class <?=$baseModelClass?> extends Model {
 <?endforeach?>
      * @return \Generator
      */
-    public static function findAllBy<?=capitalize($index_name)?>($<?=implode(', $', $index['cols'])?>) {
+    public static function findAllBy<?=ucfirst($index_name)?>($<?=implode(', $', $index['cols'])?>) {
         return static::findAll(compact('<?=implode("', '", $index['cols'])?>'));
     }
 <?endif?>
@@ -80,7 +80,7 @@ class <?=$baseModelClass?> extends Model {
 <?endforeach?>
      * @return bool
      */
-    public static function deleteBy<?=capitalize(str_replace('PRIMARY', 'pk', $index_name))?>($<?=implode(', $', $index['cols'])?>) {
+    public static function deleteBy<?=ucfirst(str_replace('PRIMARY', 'pk', $index_name))?>($<?=implode(', $', $index['cols'])?>) {
         return static::deleteAll(compact('<?=implode("', '", $index['cols'])?>'));
     }
 <?endforeach?>
@@ -133,19 +133,19 @@ foreach ($columns as $col) if (in_array($col['type'], ['set', 'serialize', 'json
 <?if ($references) foreach ($references as $row):?>
 
     /**
-     * @return <?=$model_name_prefix.capitalize($row['tbl'])?> связанный обьект
+     * @return <?=$model_name_prefix.ucfirst($row['tbl'])?> связанный обьект
      */
-    public function refBy<?=capitalize($row['id'])?>() {
-        return <?=$model_name_prefix.capitalize($row['tbl'])?>::find(['<?=$row['col']?>' => $this-><?=$row['id']?>]);
+    public function refBy<?=ucfirst($row['id'])?>() {
+        return <?=$model_name_prefix.ucfirst($row['tbl'])?>::find(['<?=$row['col']?>' => $this-><?=$row['id']?>]);
     }
 <?endforeach?>
 <?if ($relations) foreach ($relations as $row):?>
 
     /**
-     * @return \Generator - итератор связанных обьектов класса <?=$model_name_prefix.capitalize($row['tbl'])."\n"?>
+     * @return \Generator - итератор связанных обьектов класса <?=$model_name_prefix.ucfirst($row['tbl'])."\n"?>
      */
-    public function rel<?=$model_name_prefix.capitalize($row['tbl'])?>By<?=capitalize($row['id'])?>() {
-        return <?=$model_name_prefix.capitalize($row['tbl'])?>::findAll(['<?=$row['col']?>' => $this-><?=$row['id']?>]);
+    public function rel<?=$model_name_prefix.ucfirst($row['tbl'])?>By<?=ucfirst($row['id'])?>() {
+        return <?=$model_name_prefix.ucfirst($row['tbl'])?>::findAll(['<?=$row['col']?>' => $this-><?=$row['id']?>]);
     }
 <?endforeach?>
 }

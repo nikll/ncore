@@ -194,9 +194,9 @@ class Db extends \mysqli {
      * @param array $condition массив типа ['column' => 'value', 'column2' => 'value2'] который преобразуется в условия выборки WHERE через AND
      * @return string
      */
-    public function implodeWhereSql(array $condition) {
+    public function implodeWhereSql(array $condition, $prefix = '') {
         $where = [];
-        foreach ($condition as $key => $val) $where[] = '`'.$key.'` '.(is_a($val, 'db\RawSqlStmt') ? $val() : '= '.$this->escape($val));
+        foreach ($condition as $key => $val) $where[] = ($prefix ? '`'.$prefix.'`.' : ''). '`'.$key.'` '.(is_a($val, 'db\RawSqlStmt') ? $val() : '= '.$this->escape($val));
         return implode("\n AND ", $where);
     }
 
@@ -231,7 +231,7 @@ class Db extends \mysqli {
         if (!is_array($data)) return false;
         $set = [];
         foreach ($data as $name => $val) $set[] = '`'.$name.'` '.(is_a($val, 'db\RawSqlStmt') ? $val() : '= '.$this->escape($val));
-        $where = ($where ? $where."\n AND " : '').$this->implodeWhereSql($condition);
+        $where .= ($where ? "\n AND " : '').$this->implodeWhereSql($condition);
         return $this->real_query("UPDATE `".$table."`\nSET ".implode("\n, ", $set).($where ? "\nWHERE ".$where : ''));
     }
 
@@ -242,7 +242,7 @@ class Db extends \mysqli {
      * @return bool
      */
     public function delete($table, array $condition = [], $where = '') {
-        $where = ($where ? $where."\n AND " : '').$this->implodeWhereSql($condition);
+        $where .= ($where ? "\n AND " : '').$this->implodeWhereSql($condition);
         return $this->real_query("DELETE FROM `".$table."` ".($where ? "\nWHERE ".$where : ''));
     }
 
@@ -253,7 +253,7 @@ class Db extends \mysqli {
      * @return bool
      */
     public function find($table, array $condition = [], $where = '') {
-        $where = ($where ? $where.' AND ' : '').$this->implodeWhereSql($condition);
+        $where .= ($where ? "\n AND " : '').$this->implodeWhereSql($condition);
         return $this->query("SELECT * FROM `".$table."` ".($where ? 'WHERE '.$where : ''));
     }
 
