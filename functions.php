@@ -240,7 +240,8 @@ function php_code2html($code) {
  * @return string
  */
 function capitalize($str) {
-    return str_replace(' ', '', mb_convert_case(str_replace('_', ' ', $str), MB_CASE_TITLE));
+    return str_replace([' ', '_'], '', implode(array_map('ucfirst', preg_split('[\s+_]', $str))));
+    //return str_replace(' ', '', mb_convert_case(str_replace('_', ' ', $str), MB_CASE_TITLE));
 }
 
 /**

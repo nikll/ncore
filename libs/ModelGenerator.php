@@ -33,9 +33,9 @@ class ModelGenerator {
      */
     public function generate($table, $modelNamePrefix, $db = '', $options = []) {
         if ($db) $this->set_db($db);
-        $modelNamePrefix = ucfirst($modelNamePrefix);
-        $modelClass      = $modelNamePrefix.ucfirst($table);
-        $baseModelClass  = 'base'.ucfirst($modelClass);
+        $modelNamePrefix = capitalize($modelNamePrefix);
+        $modelClass      = $modelNamePrefix.capitalize($table);
+        $baseModelClass  = 'base'.capitalize($modelClass);
         $data            = [
             'model_name_prefix' => $modelNamePrefix,
             'modelClass'        => $modelClass,
@@ -57,8 +57,8 @@ class ModelGenerator {
             }
         }
 
-        if ($data['references']) foreach ($data['references'] as $row) $data['uses'][$modelNamePrefix.ucfirst($row['tbl'])] = true;
-        if ($data['relations'])  foreach ($data['relations']  as $row) $data['uses'][$modelNamePrefix.ucfirst($row['tbl'])] = true;
+        if ($data['references']) foreach ($data['references'] as $row) $data['uses'][$modelNamePrefix.capitalize($row['tbl'])] = true;
+        if ($data['relations'])  foreach ($data['relations']  as $row) $data['uses'][$modelNamePrefix.capitalize($row['tbl'])] = true;
 
         foreach ($data['columns'] as $col_name => $col) {
             $data['default_item'][$col_name] = (isset($col['default']) ? $col['default'] : null);
@@ -84,7 +84,7 @@ class ModelGenerator {
 
         // если файл модели не найден то генерим и его
         if (!file_exists(MODELS_PATH.$modelClass.'.php')) file_put_contents(MODELS_PATH.$modelClass.'.php', Templater::exec(__CLASS__.'/model.tpl', $data));
-        //echo '<pre style="padding:2px;">'.php_code2html($php_code).shell_exec('/usr/local/bin/php -l "'.MODELS_PATH.$model_name_prefix.ucfirst($table).'.php"').'</pre>';
+        //echo '<pre style="padding:2px;">'.php_code2html($php_code).shell_exec('/usr/local/bin/php -l "'.MODELS_PATH.$model_name_prefix.capitalize($table).'.php"').'</pre>';
     }
 
     /**
