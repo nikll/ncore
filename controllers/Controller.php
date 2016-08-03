@@ -53,15 +53,6 @@ abstract class Controller {
     }
 
     /**
-     * обертка для вызова шаблонизатора, формирует путь к шаблону с учетом текущего класса
-     * @param array  $data
-     * @return string
-     */
-    public static function jsonResponse(array $data = []) {
-        return output_wrapper(json_encode($data));
-    }
-
-    /**
      * обертка для вызова шаблонизатора, формирует путь к шаблону с учетом текущего класса, кроме шаблонизации документа задает все нужные заголовки для отдачи сгенерированного файла
      * @param string $template_name
      * @param array  $data
@@ -99,7 +90,7 @@ abstract class Controller {
      * вызывает метод $method текущего обьекта, проверяет наличие метода и права доступа, ведет логи, возвращщает результат работы вызываемого метода
      * @param string     $method
      * @param null|array $params
-     * @throws \Exception
+     * @throws Exception
      * @return string
      */
     protected function callMethod($method, array $params = []) {
@@ -107,19 +98,40 @@ abstract class Controller {
             throw new AccessDeniedException($this->controllerClass.'->'.$method.'()<br>Список текущих прав доступа:<br><pre>'.print_r($this->acl, true).'</pre>');
         }
         if (!method_exists($this, $method)) {
-            throw new \Exception('Метод "'.$method.'" модуля "'.static::class.'" не найден. Скорее всего, этот метод находится на стадии разработки, попробуйте открыть этот метод позже. Просим прощение за доставленные неудобства.');
+            throw new Exception('Метод "'.$method.'" модуля "'.static::class.'" не найден. Скорее всего, этот метод находится на стадии разработки, попробуйте открыть этот метод позже. Просим прощение за доставленные неудобства.');
         }
 
         return $this->$method($params);
     }
 
     /**
+     * @param array  $data
+     * @return string
+     */
+    public static function jsonResponse(array $data = []) {
+        return output_wrapper(json_encode($data));
+    }
+
+
+    /**
      * парсит входящий PUT|POST|DELETE json запрос в массив
      * @return array
      */
     protected static function jsonRequestWrapper() {
-        return (array)json_decode(@file_get_contents('php://input'), true);
+        return (array)json_decode(input_wrapper(@file_get_contents('php://input')), true);
     }
+
+
+    /**
+     * парсит входящий PUT|POST|DELETE запрос в строку
+     * @return string
+     */
+    protected static function requestWrapper() {
+        return input_wrapper(@file_get_contents('php://input'));
+    }
+
+
+    protected static $request = '';
 
     protected static $jsonRequest = [];
 
