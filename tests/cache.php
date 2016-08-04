@@ -8,4 +8,3 @@ var_dump($cache->get('test', true, 3));
 //var_dump($cache->set('test', 'test', ['t1', 't2'], 10));
 var_dump($cache->get('test'));
 //var_dump($cache->delete_tag('remonts'));
-?>

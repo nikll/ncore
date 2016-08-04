@@ -105,4 +105,3 @@ class ResultIterator extends \mysqli_result {
     }
 }
 
-?>

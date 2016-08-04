@@ -398,4 +398,3 @@ function get_file_size($file_path, $clear_stat_cache = false) {
     return fix_integer_overflow(filesize($file_path));
 }
 
-?>

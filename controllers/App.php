@@ -279,4 +279,3 @@ class App extends Controller {
     }
 }
 
-?>

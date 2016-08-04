@@ -93,4 +93,3 @@ class Templater {
         return ob_get_clean();
     }
 }
-?>

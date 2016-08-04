@@ -49,4 +49,3 @@ require_once('functions.php');
 require_once('ObjectManager.php');
 require_once('LinkManager.php');
 
-?>

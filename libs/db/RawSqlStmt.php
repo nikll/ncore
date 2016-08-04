@@ -35,4 +35,3 @@ class RawSqlStmt extends RawSql {
     }
 }
 
-?>

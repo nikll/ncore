@@ -13,4 +13,3 @@ use models\base\<?=$baseModelClass?>;
 class <?=$modelClass?> extends <?=$baseModelClass?> {
 
 }
-<?='?'?>>

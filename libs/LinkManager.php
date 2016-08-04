@@ -112,4 +112,3 @@ function get_ajax_link() {
     return LinkManager::get($_GET[ACTION_NAME]);
 }
 
-?>

@@ -288,4 +288,4 @@ class Db extends \mysqli {
     }
 }
 
-?>
+

@@ -87,4 +87,3 @@ function clear_obj($class_name, array $params = []) {
     ObjectManager::delete($class_name, $params);
 }
 
-?>

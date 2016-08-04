@@ -149,4 +149,3 @@ foreach ($columns as $col) if (in_array($col['type'], ['set', 'serialize', 'json
     }
 <?endforeach?>
 }
-<?='?'?>>
