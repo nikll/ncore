@@ -348,6 +348,11 @@ abstract class Model implements \ArrayAccess {
         return $raw_row;
     }
 
+    protected function pkReset() {
+        $this->_pk = [];
+        $this->_item[static::$_ai_column] = null;
+    }
+
     /**
      * @param array $row
      * @return bool|array

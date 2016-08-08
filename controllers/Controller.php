@@ -2,13 +2,14 @@
 
 namespace controllers;
 
-use Templater;
+use \Templater;
+use \Exception;
 
 /**
  * Class ConnectException
  * @package controllers
  */
-class AccessDeniedException extends \Exception {
+class AccessDeniedException extends Exception {
 
 }
 
