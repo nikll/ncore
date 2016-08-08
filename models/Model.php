@@ -247,7 +247,8 @@ abstract class Model implements \ArrayAccess {
             $row = $this->unpack($row);
             foreach ($row as $key => $val) {
                 //static::_checkCol($key);
-                $method = 'set'.capitalize($key);
+//                $method = 'set'.capitalize($key);
+                $method = 'set'.ucfirst($key);
                 if (method_exists($this, $method)) {
                     $this->$method($val);
                 } else {
@@ -455,7 +456,8 @@ abstract class Model implements \ArrayAccess {
      * @return mixed|null
      */
     public function &__get($key) {
-        $method = 'get'.capitalize($key);
+//        $method = 'get'.capitalize($key);
+        $method = 'get'.ucfirst($key);
         if (method_exists($this, $method)) {
             $tmp = $this->$method();
             return $tmp;
@@ -479,7 +481,8 @@ abstract class Model implements \ArrayAccess {
     public function __set($key, $val) {
         static::_checkCol($key);
         $old_val = $this->_item[$key];
-        $method = 'set'.capitalize($key);
+//        $method = 'set'.capitalize($key);
+        $method = 'set'.ucfirst($key);
         if (method_exists($this, $method)) {
             $this->$method($val);
         } else {
@@ -496,7 +499,8 @@ abstract class Model implements \ArrayAccess {
     public function row(array $with = []) {
         $data = [];
         foreach (array_keys(static::$_columns) as $key) {
-            $method = 'get'.capitalize($key);
+//            $method = 'get'.capitalize($key);
+            $method = 'get'.ucfirst($key);
             if (method_exists($this, $method)) {
                 $data[$key] = $this->$method();
             } else {

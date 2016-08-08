@@ -83,7 +83,10 @@ abstract class Controller {
      * @return mixed
      */
     protected function call($class, $method, array $params = []) {
-        if (!is_object($class)) $class = get_obj('controllers\\'.preg_replace('/^controllers\\\\/', '', $class));
+        if (!is_object($class)) {
+            $class = 'controllers\\'.preg_replace('/^controllers\\\\/', '', $class);
+            $class = new $class();
+        }
         return $class->callMethod($method, $params);
     }
 
@@ -98,9 +101,9 @@ abstract class Controller {
         if (!in_array($method, $this->acl)) {
             throw new AccessDeniedException($this->controllerClass.'->'.$method.'()<br>Список текущих прав доступа:<br><pre>'.print_r($this->acl, true).'</pre>');
         }
-        if (!method_exists($this, $method)) {
-            throw new Exception('Метод "'.$method.'" модуля "'.static::class.'" не найден. Скорее всего, этот метод находится на стадии разработки, попробуйте открыть этот метод позже. Просим прощение за доставленные неудобства.');
-        }
+//        if (!method_exists($this, $method)) {
+//            throw new Exception('Метод "'.$method.'" модуля "'.static::class.'" не найден. Скорее всего, этот метод находится на стадии разработки, попробуйте открыть этот метод позже. Просим прощение за доставленные неудобства.');
+//        }
 
         return $this->$method($params);
     }
