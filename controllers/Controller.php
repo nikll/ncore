@@ -101,9 +101,6 @@ abstract class Controller {
         if (!in_array($method, $this->acl)) {
             throw new AccessDeniedException($this->controllerClass.'->'.$method.'()<br>Список текущих прав доступа:<br><pre>'.print_r($this->acl, true).'</pre>');
         }
-//        if (!method_exists($this, $method)) {
-//            throw new Exception('Метод "'.$method.'" модуля "'.static::class.'" не найден. Скорее всего, этот метод находится на стадии разработки, попробуйте открыть этот метод позже. Просим прощение за доставленные неудобства.');
-//        }
 
         return $this->$method($params);
     }

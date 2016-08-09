@@ -32,8 +32,6 @@ set_include_path(
     .PATH_SEPARATOR.CORE_ROOT_PATH
 );
 
-
-
 /**
  * Автоматическое подключение файла класса
  * @param string $class_name
