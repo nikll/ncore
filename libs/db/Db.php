@@ -60,7 +60,14 @@ class Db extends \mysqli {
         } else {
             @parent::__construct($host, $user, $pass, $db);
         }
-        if ($this->connect_error) throw new ConnectException($this->connect_error, $this->connect_errno);
+        if ($this->connect_error) {
+            if ($port) {
+                @parent::__construct($host, $user, $pass, $db, $port);
+            } else {
+                @parent::__construct($host, $user, $pass, $db);
+            }
+            if ($this->connect_error) throw new ConnectException($this->connect_error, $this->connect_errno);
+	}
         //$this->set_charset('utf8');
     }
 
