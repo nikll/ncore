@@ -1,44 +1,10 @@
 <?
 
 namespace db;
-/**
- * Class ConnectException
- * @package db
- */
-class ConnectException extends \Exception {
 
-}
-
-/**
- * Class QueryException
- * @package Db
- */
-class QueryException extends \Exception {
-    public $query = '';
-
-    public static function create($error, $errno, $query='') {
-        $e = new self($error, $errno);
-        $e->query = $query;
-        return $e;
-    }
-}
-
-/**
- * Class InvalidDataException
- * @package db
- */
-class InvalidDataException extends \Exception {
-    /**
-     * @var array
-     */
-    public $data;
-
-    static function create($message, array $data = null) {
-        $e = new self($message);
-        $e->data = $data;
-        return $e;
-    }
-}
+use exceptions\ConnectException;
+use exceptions\QueryException;
+use exceptions\InvalidDataException;
 
 /**
  * драйвер для работы с mysql, наследован от mysqli
@@ -66,7 +32,7 @@ class Db extends \mysqli {
             } else {
                 @parent::__construct($host, $user, $pass, $db);
             }
-            if ($this->connect_error) throw new ConnectException($this->connect_error, $this->connect_errno);
+            if ($this->connect_error) ConnectException($this->connect_error, $this->connect_errno, $this);
 	}
         //$this->set_charset('utf8');
     }
@@ -93,26 +59,26 @@ class Db extends \mysqli {
     }
 
     /**
-     * возвращает обьект класса $class_name, при создании передает в конструктор обьекта ассоциативный массив записи
+     * возвращает обьект класса $className, при создании передает в конструктор обьекта ассоциативный массив записи
      * @param string $query
-     * @param string $class_name
+     * @param string $className
      * @param array  $override_fields набор данных перегружающий данные из результатов запроса
      * @return object|null
      */
-    public function fetch_object($query, $class_name, array $override_fields = null) {
-        return $this->query($query)->fetch_object($class_name, $override_fields);
+    public function fetch_object($query, $className, array $override_fields = null) {
+        return $this->query($query)->fetch_object($className, $override_fields);
     }
 
     /**
      * возвращает итератор обьектов
      * @param string $query
-     * @param string $class_name
+     * @param string $className
      * @param array  $override_fields набор данных перегружающий данные из результатов запроса
      * @return \Generator
      */
-    public function fetch_objects_iterator($query, $class_name, array $override_fields = []) {
+    public function fetch_objects_iterator($query, $className, array $override_fields = []) {
         $result = $this->query($query);
-        if ($result->num_rows) foreach ($result as $row) yield new $class_name(($override_fields ? array_merge($row, $override_fields) : $row));
+        if ($result->num_rows) foreach ($result as $row) yield new $className(($override_fields ? array_merge($row, $override_fields) : $row));
     }
 
     /**

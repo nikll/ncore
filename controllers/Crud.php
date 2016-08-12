@@ -10,7 +10,7 @@ namespace controllers;
  */
 abstract class Crud extends Controller {
     /* @var string - класс модели которую использует контроллер */
-    static $model_class = 'models\Model';
+    protected $modelClass = 'models\Model';
 
     /* @var \models\Model */
     protected $model = null;
@@ -20,7 +20,8 @@ abstract class Crud extends Controller {
      */
     public function __construct() {
         parent::__construct();
-        $this->model = new static::$model_class();
+        $modelClass = $this->modelClass;
+        $this->model = new $modelClass();
     }
 
     /**

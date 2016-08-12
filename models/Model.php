@@ -2,9 +2,10 @@
 
 namespace models;
 
+use exceptions\InvalidDataException;
 use \db\Db;
-use Generator;
-use Validator;
+use \Generator;
+use \Validator;
 
 /**
  * Class Model
@@ -179,6 +180,7 @@ abstract class Model implements \ArrayAccess {
     /**
      * @param array $cols
      * @param array $condition
+     * @param array $order_by
      * @return array
      */
     public static function fetchCols(array $cols = ['id'], array $condition = [], array $order_by = []) {
@@ -235,15 +237,14 @@ abstract class Model implements \ArrayAccess {
 
     /**
      * @param string $col
-     * @throws \Exception
+     * @throws InvalidDataException
      */
     protected static function _checkCol($col) {
-        if (!isset(static::$_columns[$col])) throw new \Exception('Неизвестная колонка '.__CLASS__.'::'.$col);
+        if (!isset(static::$_columns[$col])) throw new InvalidDataException('Неизвестная колонка '.__CLASS__.'::'.$col);
     }
 
     /**
      * @param array $row - набор данных для инициалзиации обьекта
-     * @throws \Exception
      */
     public function __construct(array $row = []) {
         if ($row) {
@@ -299,12 +300,12 @@ abstract class Model implements \ArrayAccess {
 
     /**
      * @param $col
+     * @throws InvalidDataException
      * @return array
-     * @throws \Exception
      */
     public static function getAllowValues($col) {
         static::_checkCol($col);
-        if (!isset(static::$_columns[$col]['allow_values'])) throw new \Exception('Не соответствует тип колонки '.__CLASS__.'::'.$col);
+        if (!isset(static::$_columns[$col]['allow_values'])) throw new InvalidDataException('Не соответствует тип колонки '.__CLASS__.'::'.$col);
         return static::$_columns[$col]['allow_values'];
     }
 
@@ -456,7 +457,6 @@ abstract class Model implements \ArrayAccess {
 
     /**
      * @param string $key
-     * @throws \Exception
      * @return mixed|null
      */
     public function &__get($key) {
@@ -479,7 +479,6 @@ abstract class Model implements \ArrayAccess {
     /**
      * @param string $key
      * @param mixed  $val
-     * @throws \Exception
      * @return mixed|null
      */
     public function __set($key, $val) {

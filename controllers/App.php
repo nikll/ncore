@@ -2,6 +2,8 @@
 
 namespace controllers;
 
+use \LogicException;
+
 /**
  * Class App
  *
@@ -9,7 +11,7 @@ namespace controllers;
  */
 class App extends Controller {
     /* @var string */
-    protected $method = '';
+    protected $httpRequestMethod = '';
 
     /* @var mixed|string */
     protected $url = '';
@@ -27,12 +29,13 @@ class App extends Controller {
      */
     public function __construct() {
         parent::__construct();
+
         $this->templates_path = '';
-        $this->method         = strtolower(@$_SERVER['REQUEST_METHOD']);
-        $this->url            = (isset($_SERVER['REQUEST_URI']) ? parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) : '/');
+        $this->httpRequestMethod = strtolower(@$_SERVER['REQUEST_METHOD']);
+        $this->url = (isset($_SERVER['REQUEST_URI']) ? parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) : '/');
 
         // обработчик аякс вызовов
-        /* @var array $link
+        /* @var array|null    $link
          * @var string|object $class
          * @var string        $method
          * @var array|null    $params
@@ -53,50 +56,50 @@ class App extends Controller {
     /**
      * @return bool
      */
-    public function is_options() {
-        return $this->method != 'options';
+    public function isOptions() {
+        return $this->httpRequestMethod != 'options';
     }
 
     /**
      * @return bool
      */
-    public function is_head() {
-        return $this->method != 'head';
+    public function isHead() {
+        return $this->httpRequestMethod != 'head';
     }
 
     /**
      * @return bool
      */
-    public function is_get() {
-        return $this->method != 'get';
+    public function isGet() {
+        return $this->httpRequestMethod != 'get';
     }
 
     /**
      * @return bool
      */
-    public function is_post() {
-        return $this->method != 'post';
+    public function isPost() {
+        return $this->httpRequestMethod != 'post';
     }
 
     /**
      * @return bool
      */
-    public function is_put() {
-        return $this->method != 'put';
+    public function isPut() {
+        return $this->httpRequestMethod != 'put';
     }
 
     /**
      * @return bool
      */
-    public function is_patch() {
-        return $this->method != 'patch';
+    public function isPatch() {
+        return $this->httpRequestMethod != 'patch';
     }
 
     /**
      * @return bool
      */
-    public function is_delete() {
-        return $this->method != 'delete';
+    public function isDelete() {
+        return $this->httpRequestMethod != 'delete';
     }
 //////////////////////////////////////////////////
 
@@ -192,14 +195,14 @@ class App extends Controller {
     /**
      * Роутер.
      *
-     * @param string   $method   HTTP метод (GET POST PUT HEAD итд итп)
-     * @param string   $pattern  Шаблон урла, допустимы маски: ':p', :p+, '*', '()'.
-     * @param callback $callback функция обработчик
-     * @return mixed
+     * @param string         $method   HTTP метод (GET POST PUT HEAD итд итп)
+     * @param string|array   $pattern  Шаблон урла, допустимы маски: ':p', :p+, '*', '()'.
+     * @param callback|array $callback функция обработчик
      */
     public function route($method, $pattern, $callback) {
-        if ($method && $this->method != $method) return false;
+        if ($method && $this->httpRequestMethod != $method) return;
 
+        $params_config = [];
         // Если есть описание переменных которые надо выпарсить из урла, с автоматической фильтрацией, задается в виде [ ..., 'key' => 'filter_type', ...]
         // где key это имя переменной в GET и filter_type тип фильтрации из функции filter
         if (is_array($pattern)) {
@@ -214,9 +217,9 @@ class App extends Controller {
         );
 
         // extract parameter values from URL if route matches the current request
-        if (!preg_match('#^'.$regexp.'/?$#', $this->url, $url_values)) return false;
+        if (!preg_match('#^'.$regexp.'/?$#', $this->url, $url_values)) return;
 
-        if (empty($params_config)) return $this->_exec($callback, []);
+        if (empty($params_config)) $this->_exec($callback, []);
 
         $params = [];
         $cnt    = 0;
@@ -231,15 +234,14 @@ class App extends Controller {
                 }
             }
         }
-        return $this->_exec($callback, $params);
+        $this->_exec($callback, $params);
     }
 
     /**
      * @param callback|array $callbacks
      * @param array          $params
-     * @return mixed
      */
-    protected function _exec($callbacks, $params) {
+    protected function _exec($callbacks, $params = []) {
         // если единственная функция то ее результаты передаем сразу в шаблонизатор
         if ($callbacks instanceof \Closure) $this->_app_render($callbacks($params));
 
@@ -257,7 +259,7 @@ class App extends Controller {
      * @param callback $callback
      * @param array    $params
      * @return mixed
-     * @throws \Exception
+     * @throws LogicException
      */
     protected function _caller($callback, $params) {
         // если функция-замыкание то вызываем ее
@@ -266,7 +268,8 @@ class App extends Controller {
         // если экшен контроллера
         if (is_array($callback)) return $this->call($callback[0], $callback[1], $params);
         if (is_scalar($callback)) return $callback;
-        throw new \Exception('Ошибочное описание контроллера в роутинге!');
+
+        throw new LogicException('Ошибочное описание контроллера в роутинге!');
     }
 
     /**

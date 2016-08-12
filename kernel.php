@@ -32,14 +32,15 @@ set_include_path(
     .PATH_SEPARATOR.CORE_ROOT_PATH
 );
 
+
 /**
  * Автоматическое подключение файла класса
- * @param string $class_name
+ * @param string $className
  */
-function __autoload($class_name) {
+function __autoload($className) {
     // убиваем слеши и двоеточия для того чтобы избежать попыток подключения левых файлов, бэкслешы namespace заменяем на слешы (подкаталоги)
-    $filename = str_replace(['/', '..', '\\'], ['', '', '/'], $class_name).'.php';
-    if ($filename{1} != '/') require_once($filename);
+    $fileName = str_replace(['/', '..', '\\'], ['', '', '/'], $className).'.php';
+    if ($fileName{1} != '/') require_once($fileName);
 }
 
 require_once('config.php');

@@ -98,10 +98,10 @@ class UploadHandler {
         $image_type = '.'.$this->types2ext[$image_type];
 
         do {
-            $filename = md5($tmp_dir.microtime(true).$image_type).$image_type;
-        } while (file_exists($tmp_dir.$filename));
+            $fileName = md5($tmp_dir.microtime(true).$image_type).$image_type;
+        } while (file_exists($tmp_dir.$fileName));
 
-        if (!move_uploaded_file($upload_file, $tmp_dir.$filename)) return false;
+        if (!move_uploaded_file($upload_file, $tmp_dir.$fileName)) return false;
 
         $file_size = fix_integer_overflow(intval($size));
 

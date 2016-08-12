@@ -93,15 +93,15 @@ class ResultIterator extends \mysqli_result {
     }
 
     /**
-     * возвращает обьект класса $class_name, при создании передает в конструктор обьекта ассоциативный массив записи
-     * @param string $class_name      - класс создаваемого обьекта
+     * возвращает обьект класса $className, при создании передает в конструктор обьекта ассоциативный массив записи
+     * @param string $className      - класс создаваемого обьекта
      * @param array  $override_fields - дополнительные или перекрывающие поля записи
      * @return object|bool
      */
-    public function fetch_object($class_name = '', array $override_fields = []) {
+    public function fetch_object($className = '', array $override_fields = []) {
         $row = $this->fetch_assoc();
         if (!$row) return null;
-        return new $class_name(($override_fields ? array_merge($row, $override_fields) : $row));
+        return new $className(($override_fields ? array_merge($row, $override_fields) : $row));
     }
 }
 

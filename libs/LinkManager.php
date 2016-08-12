@@ -42,7 +42,7 @@ class LinkManager {
      * выдает по aid имя класса, кому принадлежит эта ссылка, и переданные параметры
      *
      * @param string $link
-     * @return mixed|null
+     * @return array|null
      */
     public static function get($link) {
         return (isset($_SESSION['_links'][$link]) ? $_SESSION['_links'][$link] : cache()->get('lm_'.$link));
@@ -105,10 +105,10 @@ function get_link($link) {
 /**
  * выдает по aid имя класса, кому принадлежит эта ссылка, и переданные параметры
  *
- * @return bool|mixed|null
+ * @return array|null
  */
 function get_ajax_link() {
-    if (!isset($_GET[ACTION_NAME])) return false;
+    if (!isset($_GET[ACTION_NAME])) return null;
     return LinkManager::get($_GET[ACTION_NAME]);
 }
 

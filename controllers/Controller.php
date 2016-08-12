@@ -2,16 +2,9 @@
 
 namespace controllers;
 
+use exceptions\AccessDeniedException;
 use \Templater;
-use \Exception;
 
-/**
- * Class ConnectException
- * @package controllers
- */
-class AccessDeniedException extends Exception {
-
-}
 
 /**
  * Class Controller
@@ -38,8 +31,10 @@ abstract class Controller {
         $this->templates_path   = $this->controllerClass.'/';
 
         if (!empty($_SESSION['user'])) {
-            $user      = $_SESSION['user'];
-            $this->acl = array_merge($this->acl, $user->aclsByTarget($this->controllerClass));
+            $user = $_SESSION['user'];
+            if (method_exists($user, 'aclsByTarget')) {
+                $this->acl = array_merge($this->acl, $user->aclsByTarget($this->controllerClass));
+            }
         }
     }
 
@@ -79,7 +74,7 @@ abstract class Controller {
      * вызывает обработчик callMethod класса $class
      * @param string|Controller $class
      * @param string            $method
-     * @param null|array        $params
+     * @param array             $params
      * @return mixed
      */
     protected function call($class, $method, array $params = []) {
@@ -93,55 +88,16 @@ abstract class Controller {
     /**
      * вызывает метод $method текущего обьекта, проверяет наличие метода и права доступа, ведет логи, возвращщает результат работы вызываемого метода
      * @param string     $method
-     * @param null|array $params
-     * @throws Exception
+     * @param array      $params
+     * @throws AccessDeniedException
      * @return string
      */
     protected function callMethod($method, array $params = []) {
         if (!in_array($method, $this->acl)) {
-            throw new AccessDeniedException($this->controllerClass.'->'.$method.'()<br>Список текущих прав доступа:<br><pre>'.print_r($this->acl, true).'</pre>');
+            throw new AccessDeniedException($this->controllerClass.'->'.$method.'()>Список текущих прав доступа: '.print_r($this->acl, true));
         }
 
         return $this->$method($params);
-    }
-
-    /**
-     * @param array  $data
-     * @return string
-     */
-    public static function jsonResponse(array $data = []) {
-        return output_wrapper(json_encode($data));
-    }
-
-
-    /**
-     * парсит входящий PUT|POST|DELETE json запрос в массив
-     * @return array
-     */
-    protected static function jsonRequestWrapper() {
-        return (array)json_decode(input_wrapper(@file_get_contents('php://input')), true);
-    }
-
-
-    /**
-     * парсит входящий PUT|POST|DELETE запрос в строку
-     * @return string
-     */
-    protected static function requestWrapper() {
-        return input_wrapper(@file_get_contents('php://input'));
-    }
-
-
-    protected static $request = '';
-
-    protected static $jsonRequest = [];
-
-    /**
-     * парсит входящий PUT|POST|DELETE json запрос в массив и хранит его после первого вызова функции дабы много раз не парсить
-     * @return array
-     */
-    public static function getJsonRequest() {
-        return (static::$jsonRequest ? static::$jsonRequest : static::$jsonRequest = static::jsonRequestWrapper());
     }
 }
 

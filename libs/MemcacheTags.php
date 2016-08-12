@@ -1,5 +1,7 @@
 <?
 
+use exceptions\ConnectException;
+
 /**
  * Class MemcacheTags — драйвер для Memcache с тегами и блокировками
  * описание логики http://www.smira.ru/2008/10/28/web-caching-memcached-4/ и http://www.smira.ru/2008/10/29/web-caching-memcached-5/
@@ -17,10 +19,10 @@ class MemcacheTags extends Memcache {
      * @param int    $port
      * @param bool   $persistent
      * @param string $prefix
-     * @throws Exception
+     * @throws ConnectException
      */
     public function __construct($host = 'localhost', $port = 11211, $persistent = false, $prefix = '') {
-        if (!$this->addServer($host, $port, $persistent)) throw new \Exception('Cache: Connection failed: '.$host);
+        if (!$this->addServer($host, $port, $persistent)) throw new ConnectException('Cache: Connection failed: '.$host);
         $this->prefix = $prefix;
     }
 
