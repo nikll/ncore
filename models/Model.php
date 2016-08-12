@@ -181,9 +181,13 @@ abstract class Model implements \ArrayAccess {
      * @param array $condition
      * @return array
      */
-    public static function fetchCols(array $cols = ['id'], array $condition = []) {
+    public static function fetchCols(array $cols = ['id'], array $condition = [], array $order_by = []) {
         $sql = static::db()->implodeWhereSql($condition);
         $sql = "SELECT ".implode(',', $cols)." FROM `".static::$_table."` ".($sql ? 'WHERE '.$sql : '');
+        if (!empty($order_by)) {
+            foreach ($order_by as $col => $order) $order_by[$col] = "`$col` $order";
+            $sql .= " ORDER BY ".implode(', ', $order_by);
+        }
         return static::db()->fetch_column($sql);
     }
 
