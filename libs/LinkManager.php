@@ -35,7 +35,7 @@ class LinkManager {
 
         if (isset($_GET['XDEBUG_TRACE']))   $link .= '&XDEBUG_TRACE='.$_GET['XDEBUG_TRACE'].$class.$method;
         if (isset($_GET['XDEBUG_PROFILE'])) $link .= '&XDEBUG_PROFILE='.$_GET['XDEBUG_PROFILE'].$class.$method;
-        return '/api/?'.ACTION_NAME.'='.$link;
+        return '/ajax/?'.ACTION_NAME.'='.$link;
     }
 
     /**
@@ -108,7 +108,7 @@ function get_link($link) {
  * @return array|null
  */
 function get_ajax_link() {
-    if (!isset($_GET[ACTION_NAME])) return null;
+    if (!isset($_GET[ACTION_NAME])) return false;
     return LinkManager::get($_GET[ACTION_NAME]);
 }
 
