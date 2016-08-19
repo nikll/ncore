@@ -32,8 +32,8 @@ class Db extends \mysqli {
             } else {
                 @parent::__construct($host, $user, $pass, $db);
             }
-            if ($this->connect_error) ConnectException($this->connect_error, $this->connect_errno, $this);
-	}
+            if ($this->connect_error) ConnectException::create($this->connect_error, $this->connect_errno, $this);
+	    }
         //$this->set_charset('utf8');
     }
 
@@ -164,7 +164,8 @@ class Db extends \mysqli {
 
     /**
      * генерирует часть запроса с условиями для where из ассоциативного массива
-     * @param array $condition массив типа ['column' => 'value', 'column2' => 'value2'] который преобразуется в условия выборки WHERE через AND
+     * @param array  $condition массив типа ['column' => 'value', 'column2' => 'value2'] который преобразуется в условия выборки WHERE через AND
+     * @param string $prefix
      * @return string
      */
     public function implodeWhereSql(array $condition, $prefix = '') {

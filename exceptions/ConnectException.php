@@ -22,7 +22,7 @@ class ConnectException extends Exception {
      */
     public static function create($error, $errno, Db $db) {
         $e = new self($error, $errno);
-        $e->$db = $db;
+        $e->db = $db;
         return $e;
     }
 }
