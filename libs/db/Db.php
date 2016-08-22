@@ -20,7 +20,7 @@ class Db extends \mysqli {
      * @param int    $port
      * @throws ConnectException
      */
-    public function __construct($host, $user, $pass, $db, $port=null) {
+    public function __construct($host, $user, $pass, $db, $port = null) {
         if ($port) {
             @parent::__construct($host, $user, $pass, $db, $port);
         } else {
@@ -32,8 +32,8 @@ class Db extends \mysqli {
             } else {
                 @parent::__construct($host, $user, $pass, $db);
             }
-            if ($this->connect_error) ConnectException::create($this->connect_error, $this->connect_errno, $this);
-	    }
+            if ($this->connect_error) throw ConnectException::create($this->connect_error, $this->connect_errno, $this);
+        }
         //$this->set_charset('utf8');
     }
 
