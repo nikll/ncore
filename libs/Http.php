@@ -100,7 +100,7 @@ class Http {
      */
     public function response($response) {
         $this->response = $response;
-        return $this->outputWrapper($response.(defined('_DEBUG') && _DEBUG ? "\n\n".$this->jsonDebugResponse : ''));
+        return $this->outputWrapper($response."\n".(defined('_DEBUG') && _DEBUG ? "\n\n".$this->jsonDebugResponse : ''));
     }
 
     public function getMicroTime() {
