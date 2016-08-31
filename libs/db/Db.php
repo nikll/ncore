@@ -240,14 +240,14 @@ class Db extends \mysqli {
     }
 
     /**
+     * Если тразакции прошли, то вернется массив объектов транзакций.
      * @param callable $callback
-     * @return bool
+     * @return bool|array
      */
     public function transactions(callable $callback) {
-        $result = true;
         $this->autocommit(false);
         try {
-            if ($callback()) {
+            if ($result = $callback()) {
                 $this->commit();
             } else {
                 $this->rollback();
